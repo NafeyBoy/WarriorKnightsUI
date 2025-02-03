@@ -29,3 +29,18 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Bootstrap overrides */
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: purple !important;
+  padding: 2px 8px 2px 8px;
+}
+
+.table{
+  border: solid 1px darkgrey;
+}
+
+.table th{
+  background-color: green !important;
+  color: white !important;
+}

@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "New Game";
+}
+
+<script src="~/js/newgame.js" asp-append-version="true"></script>
+
+<h4>Create a new game of Warrior Knights</h4>
+
+<div class="panel">
+    <div class="panel-head">Players</div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-4"><input id="txtNewPlayerName" class="form-control" placeholder="Enter new player's name"></div>
+            <div class="col-1"><input id="colNewPlayerColour" type="color" class="form-control" placeholder="Choose new player's colour" style="height: 36px;"></div>
+            <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnAddPlayerClick()" value="Add Player"></input></div>
+        </div>
+        <hr/>
+        <table id="lstPlayers" class="table">
+            <thead>
+                <tr style="border: solid 1px darkgrey;">
+                    <th>Player Name</th>
+                    <th>Player Colour</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="row col-12" style="margin-left:8px; margin-top: 20px;">
+            <input type="button" class="btn btn-primary btn-lg" onclick="btnStartGameClick()" value="Start Game" style="width: 99%;"></input>
+        </div>
+    </div>
+</div>

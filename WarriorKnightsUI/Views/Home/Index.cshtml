@@ -2,7 +2,70 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .boardTile{
+        border: 1px solid black;
+        background-color: greenyellow;
+        width: 200;
+        height: 200;
+    }
+
+    .boardRow{
+        margin-top: 0px;
+    }
+</style>
+
+<div id="wkcontainer">
+    <div class="row">
+        <div class="col-1">From</div>
+        <div class="col-2"><input id="txtFromX" value="0"></input></div>
+        <div class="col-2"><input id="txtFromY" value="75"></input></div>
+    </div>    
+    <div class="row">
+        <div class="col-1">To</div>
+        <div class="col-2"><input id="txtToX" value="100"></div>
+        <div class="col-2"><input id="txtToY" value="87"></input></div>
+        <div class="col-2"><input type="button" onclick="btnDrawClick()" value="Draw it Baby!"></input></div>
+    </div>
+    <div id="board" class="row" style="margin: top 20px;">
+        <div id="row1" class="row col-12 boardRow">
+            <div class="col-2"><canvas id="Tile11" class="boardTile"></canvas></div>
+            <div class="col-2"><canvas id="Tile21" class="boardTile"></canvas></div>
+            <div class="col-2"><canvas id="Tile31" class="boardTile"></canvas></div>
+            <div class="col-2"><canvas id="Tile41" class="boardTile"></canvas></div>
+            <div class="col-2"><canvas id="Tile51" class="boardTile"></canvas></div>
+            <div class="col-2"><canvas id="Tile61" class="boardTile"></canvas></div>
+        </div>
+        <div id="row2" class="row col-12 boardRow">
+            <div class="col-2">
+                <canvas id="TileA2" class="boardTile"></canvas>
+            </div>
+            <div class="col-2">
+                <canvas id="TileB2" class="boardTile"></canvas>
+            </div>
+            <div class="col-2">
+                <canvas id="TileC2" class="boardTile"></canvas>
+            </div>
+            <div class="col-2">
+                <canvas id="TileD2" class="boardTile"></canvas>
+            </div>
+            <div class="col-2">
+                <canvas id="TileE2" class="boardTile"></canvas>
+            </div>
+            <div class="col-2">
+                <canvas id="TileF2" class="boardTile"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section scripts{
+    <script>
+        $(function(){
+            loadTile("TileA1");
+            @* for(let i = 1; i < 7; ++i){
+                loadTile("TileA" + i);
+            } *@
+        })
+    </script>
+}

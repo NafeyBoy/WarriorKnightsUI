@@ -32,19 +32,21 @@ namespace WarriorKnightsUI.Controllers
         }
 
         [HttpPost]
-        public async Task<string> CreateGame(CreateGameVM vm){
+        public async Task<JsonResult> CreateGame([FromBody]CreateGameVM vm){
             try{
                 using StringContent jsonContent = new(
                     JsonSerializer.Serialize(vm),
                     Encoding.UTF8,
                     "application/json");
-    
-                    using HttpResponseMessage response = await Gateway.Api.PostAsync("Game", jsonContent);
-                    response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStringAsync();
+
+                using HttpResponseMessage response = await Gateway.Api.PostAsync("Game", jsonContent);
+                response.EnsureSuccessStatusCode();
+                var ret = await response.Content.ReadAsStringAsync();
+                
+                return Json(new { success = true, response = ret });
             }
-            catch{
-                return "";
+            catch(Exception ex){
+                return Json(new {success = false, response = ""});
             }
         }
     }

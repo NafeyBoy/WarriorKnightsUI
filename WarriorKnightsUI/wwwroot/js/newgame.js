@@ -1,4 +1,3 @@
-
 function btnAddPlayerClick() {
     var newPlayerName = $("#txtNewPlayerName").val();
     var newPlayerColour = $("#colNewPlayerColour").val();
@@ -31,7 +30,7 @@ function btnClearAllPlayersClick(){
     $("#lstPlayers tbody").empty();
 }
 
-function btnStartGameClick(url) {
+function btnStartGameClick() {
     var newGameName = $("#txtNewGameName").val();
 
     if (!newGameName) {
@@ -55,10 +54,13 @@ function btnStartGameClick(url) {
     };
 
     $.ajax({
-        type: "POST",
+        type: 'POST',
+        url: 'CreateGame',
+        dataType: 'json',
+        data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        url: url,
-        data: JSON.stringify(data)
-     });
+        success: function(result) {
+            console.log(result);
+        }
+    });
 }

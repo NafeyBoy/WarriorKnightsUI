@@ -31,6 +31,12 @@ namespace WarriorKnightsUI.Controllers
             return View("Error!");
         }
 
+        public IActionResult RunGame(Guid gameId)
+        {
+            //TODO - create a model containing info needed to create running game view, then create gateway action & message type to get that data and load it in. 
+            return View();
+        }
+
         [HttpPost]
         public async Task<JsonResult> CreateGame([FromBody]CreateGameVM vm){
             try{
@@ -42,7 +48,7 @@ namespace WarriorKnightsUI.Controllers
                 using HttpResponseMessage response = await Gateway.Api.PostAsync("Game", jsonContent);
                 response.EnsureSuccessStatusCode();
                 var ret = await response.Content.ReadAsStringAsync();
-                
+
                 return Json(new { success = true, response = ret });
             }
             catch(Exception ex){

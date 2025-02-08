@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using WarriorKnightsUI.Models;
 
 namespace WarriorKnightsUI.Controllers
@@ -39,20 +33,14 @@ namespace WarriorKnightsUI.Controllers
 
         [HttpPost]
         public async Task<JsonResult> CreateGame([FromBody]CreateGameVM vm){
-            try{
-                using StringContent jsonContent = new(
-                    JsonSerializer.Serialize(vm),
-                    Encoding.UTF8,
-                    "application/json");
-
-                using HttpResponseMessage response = await Gateway.Api.PostAsync("Game", jsonContent);
-                response.EnsureSuccessStatusCode();
-                var ret = await response.Content.ReadAsStringAsync();
-
-                return Json(new { success = true, response = ret });
+            try
+            {
+                var response = await Gateway.Post(new GatewayRequest { Url = "Game", Body = vm });
+                return Json(response);
             }
-            catch(Exception ex){
-                return Json(new {success = false, response = ""});
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Response = ex.Message });
             }
         }
     }

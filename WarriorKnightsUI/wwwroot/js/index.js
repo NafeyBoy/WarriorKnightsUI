@@ -33,6 +33,10 @@ function btnLaunchGameClick(baseUrl) {
     location.href = baseUrl + "?gameId=" + $("#txtGameId").val() + "&playerId=" + $("#cmbPlayers").val();    
 }
 
+function btnTestGameClick() {
+    location.href = "/Game/RunGame?gameId=085EC183-C8CF-4A5B-979B-10021440BAF1&playerId=79";
+}
+
 function btnCancelLoadGameClick() { 
     $("#selectGameToLoad").hide();
     $("#selectPlayerToLoad").hide();

@@ -8,6 +8,9 @@
     <div class="panel-head">Warrior Knights Main Menu</div>
     <div class="panel-body">
         <div class="row col-12" style="margin-left:8px; margin-top: 20px;">
+            <input type="button" class="btn btn-primary btn-lg" onclick="btnTestGameClick()" value="Run Test Game" style="width: 99%;" />
+        </div>
+        <div class="row col-12" style="margin-left:8px; margin-top: 20px;">
             <input type="button" class="btn btn-primary btn-lg" onclick="location.href='@Url.Action("NewGame", "Game")'" value="Start a New Game" style="width: 99%;" />
         </div>
         <div class="row col-12" style="margin-left:8px; margin-top: 20px;">
@@ -19,6 +22,7 @@
             <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnCancelLoadGameClick()" value="Cancel" style="width: 100%; margin-top: 4px;" ></input></div>
         </div>
         <div id="selectPlayerToLoad" class="row col-12" style="margin-left:8px; margin-top: 20px; display: none;">
+            @* //TODO style this using bootstrap (convert to divs with specific class,085EC183-C8CF-4A5B-979B-10021440BAF1 see https://stackoverflow.com/questions/76579496/asp-net-core-controller-return-string-as-valid-json) *@
             <div class="col-6"><select name="players" id="cmbPlayers" style="width: 100%;"></select></div>
             <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnLaunchGameClick('@Url.Action("RunGame", "Game")')" value="Launch" style="width: 100%; margin-top: 4px;" ></input></div>
             <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnCancelLoadGameClick()" value="Cancel" style="width: 100%; margin-top: 4px;" ></input></div>

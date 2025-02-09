@@ -45,11 +45,24 @@ namespace WarriorKnightsUI.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> LoadGame([FromBody] LoadGameVM vm)
+        public async Task<JsonResult> LoadGame([FromBody] GameIdVM vm)
         {
             try
             {
                 var response = await Gateway.Get(new GatewayRequest { Url = $"Game/{vm.GameId}" });
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Response = ex.Message });
+            }
+        }
+
+        public async Task<JsonResult> LoadTiles(Guid id)
+        {
+            try
+            {
+                var response = await Gateway.Get(new GatewayRequest { Url = $"Game/Board/{id}" });
                 return Json(response);
             }
             catch (Exception ex)

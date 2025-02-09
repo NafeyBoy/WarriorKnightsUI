@@ -8,9 +8,12 @@
     .boardTile{
         border: 1px solid black;
         background-color: greenyellow;
+    }    
+    .boardTileSize{
         width: 200;
         height: 200;
     }
+    
 
     .boardRow{
         margin-top: 0px;
@@ -34,9 +37,7 @@
     </div>
 </div>
 
-<div id="board" class="row" style="margin-top: 24px;">
-    //TODO  auto load board Baby making request To gateway and getting tiles back
-</div>
+<div id="board" class="row" style="margin-top: 24px;"></div>
 @* <div id="board" class="row" style="margin-top: 24px;">
     <div id="row1" class="row col-12 boardRow">
         <div class="col-2"><canvas id="Tile11" class="boardTile"></canvas></div>
@@ -67,3 +68,11 @@
         </div>
     </div>
 </div> *@
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            loadTiles("@Model.GameId");
+        });
+    </script>
+}

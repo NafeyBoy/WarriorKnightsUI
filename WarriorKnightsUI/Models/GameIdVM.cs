@@ -1,6 +1,6 @@
 namespace WarriorKnightsUI.Models
 {
-    public class LoadGameVM
+    public class GameIdVM
     {
         public Guid GameId { get; set; }
     }

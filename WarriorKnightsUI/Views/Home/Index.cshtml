@@ -13,9 +13,14 @@
         <div class="row col-12" style="margin-left:8px; margin-top: 20px;">
             <input type="button" class="btn btn-primary btn-lg" onclick="btnShowLoadInfoClick()" value="Load a Saved Game" style="width: 99%;"></input>
         </div>
-        <div id="loadGameInfo" class="row col-12" style="margin-left:8px; margin-top: 20px; display: none;">
-            <div class="col-6"><input id="txtGameId" class="form-control" placeholder="Enter the GameId of the game you want to load." value="9E51F8FC-A55A-4A6E-8623-B253C826B859"></input></div>
-            <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnLoadGameClick('@Url.Action("RunGame", "Game")')" value="Load" style="width: 100%; margin-top: 4px;" ></input></div>
+        <div id="selectGameToLoad" class="row col-12" style="margin-left:8px; margin-top: 20px; display: none;">
+            <div class="col-6"><input id="txtGameId" class="form-control" placeholder="Enter the GameId of the game you want to load." value="085EC183-C8CF-4A5B-979B-10021440BAF1"></input></div>
+            <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnLoadGameClick()" value="Load" style="width: 100%; margin-top: 4px;" ></input></div>
+            <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnCancelLoadGameClick()" value="Cancel" style="width: 100%; margin-top: 4px;" ></input></div>
+        </div>
+        <div id="selectPlayerToLoad" class="row col-12" style="margin-left:8px; margin-top: 20px; display: none;">
+            <div class="col-6"><select name="players" id="cmbPlayers" style="width: 100%;"></select></div>
+            <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnLaunchGameClick('@Url.Action("RunGame", "Game")')" value="Launch" style="width: 100%; margin-top: 4px;" ></input></div>
             <div class="col-2"><input type="button" class="btn btn-primary" onclick="btnCancelLoadGameClick()" value="Cancel" style="width: 100%; margin-top: 4px;" ></input></div>
         </div>
     </div>    

@@ -17,7 +17,7 @@ function btnDrawClick(){
     col += 1;
 }
 
-function loadTile(tileId){
+function loadTiles(tileId){
     // const theTile = document.getElementById(tileId);
     // const ctx = theTile.getContext("2d");
     

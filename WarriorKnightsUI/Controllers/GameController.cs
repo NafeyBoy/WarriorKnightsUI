@@ -19,23 +19,37 @@ namespace WarriorKnightsUI.Controllers
             return View();
         }
 
+        public IActionResult RunGame(Guid gameId, int playerId)
+        {
+            var model = new RunGameVM { GameId = gameId, PlayerId = playerId };
+            return View(model);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View("Error!");
         }
 
-        public IActionResult RunGame(Guid gameId)
-        {
-            //TODO - create a model containing info needed to create running game view, then create gateway action & message type to get that data and load it in. 
-            return View();
-        }
-
         [HttpPost]
-        public async Task<JsonResult> CreateGame([FromBody]CreateGameVM vm){
+        public async Task<JsonResult> CreateGame([FromBody] CreateGameVM vm)
+        {
             try
             {
                 var response = await Gateway.Post(new GatewayRequest { Url = "Game", Body = vm });
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Response = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LoadGame([FromBody] LoadGameVM vm)
+        {
+            try
+            {
+                var response = await Gateway.Get(new GatewayRequest { Url = $"Game/{vm.GameId}" });
                 return Json(response);
             }
             catch (Exception ex)

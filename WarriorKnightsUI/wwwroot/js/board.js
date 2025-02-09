@@ -62,12 +62,12 @@ function createTileDivs(maxEast, maxNorth) {
         for (let east = 0; east <= maxEast; ++east){        
             if (east == 0) createBoardRow(north, maxEast);
             var tileGridRef = String.fromCharCode(97 + east) + north;
-            $("#boardRow" + north).append("<div id='tile_" + tileGridRef + "' class='col-2'><canvas id='" + tileGridRef + "' class='boardTile'/></div>");
+            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "'><canvas id='" + tileGridRef + "' class='boardTile'/></td>");
         }
     }
 }
 function createBoardRow(northIndex, maxEast) {
-    $("#board").append("<div id='boardRow" + northIndex +"' class='row' style='width: '" + (200 * (maxEast + 1)) + "px;'></div>")
+    $("#board").append("<tr id='boardRow" + northIndex +"'></tr>")
 }
 
 function drawRoads(tiles) {

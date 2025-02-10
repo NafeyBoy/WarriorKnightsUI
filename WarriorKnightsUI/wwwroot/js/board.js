@@ -1,4 +1,5 @@
 var col = 1;
+var tileSize = 200;
 
 function btnDrawClick(){
     var fromx = $("#txtFromX").val();
@@ -60,14 +61,18 @@ function sortTilesByNorthingsDesc(a, b){
 function createTileDivs(maxEast, maxNorth) {
     for (let north = maxNorth; north >= 0; --north) {
         for (let east = 0; east <= maxEast; ++east){        
-            if (east == 0) createBoardRow(north, maxEast);
+            let borderClass = 'boardTileBorderThreeSides';
+            if (east == 0) {
+                createBoardRow(north, maxEast);
+                borderClass = 'boardTileBorderFull';
+            }
             var tileGridRef = String.fromCharCode(97 + east) + north;
-            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "'><canvas id='" + tileGridRef + "' class='boardTile'/></td>");
+            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
         }
     }
 }
 function createBoardRow(northIndex, maxEast) {
-    $("#board").append("<tr id='boardRow" + northIndex +"'></tr>")
+    $("#board").append("<tr id='boardRow" + northIndex +"' style='height: " + tileSize + "px;'></tr>")
 }
 
 function drawRoads(tiles) {
@@ -75,11 +80,18 @@ function drawRoads(tiles) {
     tiles.forEach(tile => {
         var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
         
-        let tileDiv = $("#tile_" + tileGridRef);
-        let eastMid = tileDiv.width() / 2;
-        let northMid = tileDiv.height() / 2;
-        let eastMax = tileDiv.width();
-        let northMax = tileDiv.height();
+        let tileDiv = $("#" + tileGridRef);
+        // let eastMid = tileDiv.width() / 2;
+        // let northMid = tileDiv.height() / 2;
+        // let eastMax = tileDiv.width();
+        // let northMax = tileDiv.height();
+        
+        
+        let eastMid = 150;
+        let northMid = 75;
+        let eastMax = 300;
+        let northMax = 150;
+        
         
         const tileCanvasJS = document.getElementById(tileGridRef);
         const tileContext = tileCanvasJS.getContext("2d");

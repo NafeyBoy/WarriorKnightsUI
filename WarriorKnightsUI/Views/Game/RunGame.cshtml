@@ -5,39 +5,57 @@
 }
 
 <style>
+    .boardCell{
+        padding: 0;
+        margin: 0;
+    }
+
     .boardTile{
-        border: 1px solid black;
         background-color: greenyellow;
-    }    
+        width: 200px;
+        height: 200px;
+    }
+    .boardTileBorderFull{
+        border: 1px solid darkgrey;
+    }
+    .boardTileBorderThreeSides{
+        border-right: 1px solid darkgrey;
+        border-top: 1px solid darkgrey;
+        border-bottom: 1px solid darkgrey;
+    }
+
     .boardTileSize{
         width: 200;
         height: 200;
     }
-    
 
     .boardRow{
         margin-top: 0px;
     }
 </style>
 
-<div id="manualDraw" class="panel">
-    <div class="panel-head">Manual Drawing</div>
-    <div class="panel-body" style="display: none;">
-        <div class="row">
-            <div class="col-1">From</div>
-            <div class="col-2"><input id="txtFromX" value="0"></input></div>
-            <div class="col-2"><input id="txtFromY" value="75"></input></div>
-        </div>    
-        <div class="row">
-            <div class="col-1">To</div>
-            <div class="col-2"><input id="txtToX" value="100"></div>
-            <div class="col-2"><input id="txtToY" value="87"></input></div>
-            <div class="col-2"><input type="button" onclick="btnDrawClick()" value="Draw it Baby!"></input></div>
+<div class="row">
+    <div id="manualDraw" class="panel">
+        <div class="panel-head">Manual Drawing</div>
+        <div class="panel-body" style="display: none;">
+            <div class="row">
+                <div class="col-1">From</div>
+                <div class="col-2"><input id="txtFromX" value="0"></input></div>
+                <div class="col-2"><input id="txtFromY" value="75"></input></div>
+            </div>    
+            <div class="row">
+                <div class="col-1">To</div>
+                <div class="col-2"><input id="txtToX" value="100"></div>
+                <div class="col-2"><input id="txtToY" value="87"></input></div>
+                <div class="col-2"><input type="button" onclick="btnDrawClick()" value="Draw it Baby!"></input></div>
+            </div>
         </div>
     </div>
 </div>
 
-<table id="board" class="row" style="margin-top: 24px;"></table>
+<div style="margin-top: 24px;">
+    <table id="board" cell-spacing="0" style="border-collapse: collapse; border-spacing: 0;"></table>
+</div>
 
 @section Scripts{
     <script>

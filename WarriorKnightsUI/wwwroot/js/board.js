@@ -1,5 +1,9 @@
 var col = 1;
-var tileSize = 200;
+var tileSize = 120;
+const eastMid = 150;
+const northMid = 75;
+const eastMax = 300;
+const northMax = 150;
 
 function btnDrawClick(){
     var fromx = $("#txtFromX").val();
@@ -45,6 +49,7 @@ function displayBoard(tiles) {
     var maxNorth = tiles[0].northings;
     createTileDivs(maxEast, maxNorth);
     drawRoads(tiles);
+    drawCities(tiles);
 }
 
 function sortTilesByEastingsDesc(a, b){
@@ -72,30 +77,22 @@ function createTileDivs(maxEast, maxNorth) {
     }
 }
 function createBoardRow(northIndex, maxEast) {
-    $("#board").append("<tr id='boardRow" + northIndex +"' style='height: " + tileSize + "px;'></tr>")
+    $("#board").append("<tr id='boardRow" + northIndex +"' style='padding: 0;'></tr>")
 }
 
 function drawRoads(tiles) {
-    var test = 0;
     tiles.forEach(tile => {
-        var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
-        
-        let tileDiv = $("#" + tileGridRef);
+        //TODO - work out how to dynamically calculate width, height and midpoints.
         // let eastMid = tileDiv.width() / 2;
         // let northMid = tileDiv.height() / 2;
         // let eastMax = tileDiv.width();
         // let northMax = tileDiv.height();
-        
-        
-        let eastMid = 150;
-        let northMid = 75;
-        let eastMax = 300;
-        let northMax = 150;
-        
-        
+                       
+        var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
         const tileCanvasJS = document.getElementById(tileGridRef);
         const tileContext = tileCanvasJS.getContext("2d");
         tileContext.strokeStyle = "brown";
+        tileContext.lineWidth = 4;
 
         if (tile.roadNorth) {
             tileContext.beginPath();
@@ -145,9 +142,34 @@ function drawRoads(tiles) {
             tileContext.strokeStyle = "brown";
             tileContext.stroke();
         }
-        
-        ++test;
-
     });
+}
+
+function drawCities(tiles) {
+    var test = 0;
+    let cityEast = eastMid - 25;
+    let cityNorth = northMid - 25;
+
+    tiles.forEach(tile => { 
+        var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
+        const tileCanvasJS = document.getElementById(tileGridRef);
+        const tileContext = tileCanvasJS.getContext("2d");
+
+        tile.cities.forEach(city => {
+            tileContext.beginPath();
+            tileContext.lineWidth = 2;
+            tileContext.strokeStyle = "red";
+            tileContext.strokeRect(cityEast, cityNorth, 50, 50);
+
+            tileContext.font = "20px Arial";
+            tileContext.fillText(city.name, cityEast, cityNorth - 4);
+            
+            tileContext.font = "16px Arial";
+            tileContext.fillText(city.defensiveStrength + "/" + city.basicIncome, cityEast, cityNorth + 64);
+        })
+
+        ++test;
+    });
+
 }
 

@@ -19,9 +19,9 @@ namespace WarriorKnightsUI.Controllers
             return View();
         }
 
-        public IActionResult RunGame(Guid gameId, int playerId)
+        public IActionResult RunGame(Guid gameId)
         {
-            var model = new RunGameVM { GameId = gameId, PlayerId = playerId };
+            var model = new RunGameVM { GameId = gameId };
             return View(model);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -58,11 +58,24 @@ namespace WarriorKnightsUI.Controllers
             }
         }
 
-        public async Task<JsonResult> LoadTiles(Guid id)
+        public async Task<JsonResult> GetTiles(Guid id)
         {
             try
             {
                 var response = await Gateway.Get(new GatewayRequest { Url = $"Game/Board/{id}" });
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Response = ex.Message });
+            }
+        }
+
+        public async Task<JsonResult> GetPlayers(Guid id)
+        {
+            try
+            {
+                var response = await Gateway.Get(new GatewayRequest { Url = $"Game/{id}" });
                 return Json(response);
             }
             catch (Exception ex)

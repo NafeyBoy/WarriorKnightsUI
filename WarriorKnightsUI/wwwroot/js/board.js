@@ -29,7 +29,7 @@ function loadTiles(gameId) {
 
     $.ajax({
         type: 'GET',
-        url: 'LoadTiles/' + gameId,
+        url: 'GetTiles/' + gameId,
         dataType: 'json',
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
@@ -72,7 +72,7 @@ function createTileDivs(maxEast, maxNorth) {
                 borderClass = 'boardTileBorderFull';
             }
             var tileGridRef = String.fromCharCode(97 + east) + north;
-            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
+            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;' onclick='tileClicked()'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
         }
     }
 }
@@ -171,5 +171,9 @@ function drawCities(tiles) {
         ++test;
     });
 
+}
+
+function tileClicked(e) {
+    alert(e);
 }
 

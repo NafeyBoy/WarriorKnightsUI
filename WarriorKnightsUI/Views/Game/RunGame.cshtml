@@ -32,6 +32,11 @@
     .boardRow{
         margin-top: 0px;
     }
+
+    .playerHud{
+        margin-top: 20px;
+        padding: 8px;
+    }
 </style>
 
 @* <div class="row">
@@ -52,15 +57,21 @@
         </div>
     </div>
 </div> *@
+<div class="row">
+    <div class="col-9">
+        <div style="margin-top: 24px;">
+            <table id="board" cell-spacing="0" style="border-collapse: collapse; border-spacing: 0;"></table>
+        </div>
+    </div>
+    <div id="playerHudsContainer" class="col-3"></div>
 
-<div style="margin-top: 24px;">
-    <table id="board" cell-spacing="0" style="border-collapse: collapse; border-spacing: 0;"></table>
 </div>
 
 @section Scripts{
     <script>
         $(document).ready(function(){
             loadTiles("@Model.GameId");
+            loadPlayerHuds("@Model.GameId");
         });
     </script>
 }

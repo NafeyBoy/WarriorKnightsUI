@@ -34,7 +34,7 @@ function btnLaunchGameClick(baseUrl) {
 }
 
 function btnTestGameClick() {
-    location.href = "/Game/RunGame?gameId=085EC183-C8CF-4A5B-979B-10021440BAF1&playerId=79";
+    location.href = "/Game/RunGame?gameId=085EC183-C8CF-4A5B-979B-10021440BAF1";
 }
 
 function btnCancelLoadGameClick() { 

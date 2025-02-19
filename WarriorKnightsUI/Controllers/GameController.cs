@@ -83,5 +83,20 @@ namespace WarriorKnightsUI.Controllers
                 return Json(new { Success = false, Response = ex.Message });
             }
         }
+
+        public async Task<JsonResult> GetPlayerMessage(Guid id)
+        {
+            try
+            {
+                var response = await Gateway.Get(new GatewayRequest { Url = $"Game/PlayerMessage/{id}" });
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Response = ex.Message });
+            }
+        }
+
+
     }
 }

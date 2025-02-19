@@ -1,13 +1,7 @@
 function loadPlayerHuds(gameId) {
-    var data = {
-        GameId: gameId
-    };
-
-    $.ajax({
+    return $.ajax({
         type: 'GET',
         url: 'GetPlayers/' + gameId,
-        dataType: 'json',
-        data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (ret) {
             var players = JSON.parse(ret.response);
@@ -18,7 +12,10 @@ function loadPlayerHuds(gameId) {
 }
 
 function displayPlayerHuds(players) {
+    var textColor = calculateTextColorForBackgroundColor("#123456");
+
     players.forEach(player => {
-        $("#playerHudsContainer").append("<div id='playerHud" + player.playerId + "' class='playerHud' style='border: 4px solid " + player.colour + "'><div class='col-8' style='color:" + player.colour + "'>" + player.name + "</div></div>");
+        var playerTextColor = calculateTextColorForBackgroundColor(player.colour);
+        $("#playerHudsContainer").append("<div class='panel'><div class='panel-head' style='background-color: " + player.colour + "; color: " + playerTextColor + ";'>" + player.name + "</div><div class='panel-body' id='playerHud" + player.playerId + "' style='border: solid 1px " + player.colour + "; display:none;'></div></div>");
     });
 }

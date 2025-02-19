@@ -23,21 +23,14 @@ function btnDrawClick(){
 }
 
 function loadTiles(gameId) {
-    var data = {
-        GameId: gameId
-    };
-
-    $.ajax({
+    return $.ajax({
         type: 'GET',
         url: 'GetTiles/' + gameId,
-        dataType: 'json',
-        data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (ret) {
             var tiles = JSON.parse(ret.response);
-            displayBoard(tiles);
+            displayBoard(tiles);            
         }
-        //TODO - work out how to capture errors (success = false) 
     });
 }
 
@@ -64,6 +57,7 @@ function sortTilesByNorthingsDesc(a, b){
 }
 
 function createTileDivs(maxEast, maxNorth) {
+    //TODO - alter this method to take an ordered list of tile objects so the id of the board cells can include the tile Id.
     for (let north = maxNorth; north >= 0; --north) {
         for (let east = 0; east <= maxEast; ++east){        
             let borderClass = 'boardTileBorderThreeSides';
@@ -72,9 +66,16 @@ function createTileDivs(maxEast, maxNorth) {
                 borderClass = 'boardTileBorderFull';
             }
             var tileGridRef = String.fromCharCode(97 + east) + north;
-            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;' onclick='tileClicked()'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
+            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
         }
     }
+
+    // $(".boardCell").click(function () {
+    //     alert($(this).attr('id')); 
+    // });
+    $(".boardCell").click(function () {
+        tileClicked($(this)); 
+    });
 }
 function createBoardRow(northIndex, maxEast) {
     $("#board").append("<tr id='boardRow" + northIndex +"' style='padding: 0;'></tr>")
@@ -173,7 +174,10 @@ function drawCities(tiles) {
 
 }
 
-function tileClicked(e) {
-    alert(e);
+function tileClicked(clickedBoardCell) {
+    if (currentActionType == ACTION_SELECT_TILE) {
+        let clickedId = clickedBoardCell.attr('id');
+        alert("You clicked tile " + clickedId + " when you were supposed to!");
+    }
 }
 

@@ -59,7 +59,7 @@
 </div> *@
 <div class="row">
     <div class="col-9">
-        <div style="margin-top: 24px;">
+        <div id="boardContainer" style="margin-top: 24px;">
             <table id="board" cell-spacing="0" style="border-collapse: collapse; border-spacing: 0;"></table>
         </div>
     </div>
@@ -70,8 +70,7 @@
 @section Scripts{
     <script>
         $(document).ready(function(){
-            loadTiles("@Model.GameId");
-            loadPlayerHuds("@Model.GameId");
+            loadGame("@Model.GameId");
         });
     </script>
 }

@@ -1,27 +1,31 @@
-﻿var currentActionType = -1;
+﻿var currentGameId = "";
+var currentActionType = -1;
+var currentPlayerMessageId = "";
 
 async function loadGame(gameId) {
-    try{
-        var displayBoard = loadTiles(gameId);
-        var displayPlayerHuds = loadPlayerHuds(gameId);
+    try {
+        currentGameId = gameId;
+        var displayBoard = loadTiles(currentGameId);
+        var displayPlayerHuds = loadPlayerHuds(currentGameId);
         
         await displayBoard;
         await displayPlayerHuds;
 
-        listenForMessage(gameId);
+        listenForMessage(currentGameId);
     }
     catch(e){
         console.error(`WK failure: ${e.message}`);
     }
 }
 
-function listenForMessage(gameId) {
+function listenForMessage() {
+    alert("listen");
     let message = null;
     let tester = 0;
     while (!message) {
         $.ajax({
             type: 'GET',
-            url: 'GetPlayerMessage/' + gameId,
+            url: 'GetPlayerMessage/' + currentGameId,
             contentType: "application/json; charset=utf-8",
             async: false,
             success: function (ret) {
@@ -36,17 +40,53 @@ function listenForMessage(gameId) {
 }
 
 function processPlayerMessage(message) {
+    alert("process");
     currentActionType = message.actionType;
+    currentPlayerMessageId = message.playerMessageId;
 
     switch (message.actionType) {
         case ACTION_SELECT_TILE:
             let playerHud = $("#playerHud" + message.playerId);
             playerHud.append("<div>Please select a tile</div>");
-            playerHud.slideToggle();
+            playerHud.slideDown();
             $("#boardContainer").addClass("highlightGameElement");
             break;
         case ACTION_SELECT_CUSTOM_OPTION:
             alert("select custom");
             break;
     }
+}
+
+function respondToPlayerMessage(responseValue) {
+    alert(responseValue);
+    var data = {
+        PlayerMessageId: currentPlayerMessageId,
+        GameId: currentGameId,
+        ResponseValue: responseValue
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: 'RespondToPlayerMessage',
+        dataType: 'json',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (ret) {
+            cleanUpAfterPlayerResponse()
+        }
+        //TODO - work out how to capture errors (success = false) 
+    });
+}
+
+function cleanUpAfterPlayerResponse() {
+    if (currentActionType == ACTION_SELECT_TILE) {
+        $(".player-hud-body").slideUp();
+        var refreshBoard = loadTiles(currentGameId);
+    }
+    
+    currentActionType = -1;
+    currentPlayerMessageId = "";
+    
+    await(refreshBoard);
+    listenForMessage();
 }

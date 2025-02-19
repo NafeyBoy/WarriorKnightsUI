@@ -16,6 +16,6 @@ function displayPlayerHuds(players) {
 
     players.forEach(player => {
         var playerTextColor = calculateTextColorForBackgroundColor(player.colour);
-        $("#playerHudsContainer").append("<div class='panel'><div class='panel-head' style='background-color: " + player.colour + "; color: " + playerTextColor + ";'>" + player.name + "</div><div class='panel-body' id='playerHud" + player.playerId + "' style='border: solid 1px " + player.colour + "; display:none;'></div></div>");
+        $("#playerHudsContainer").append("<div class='panel'><div class='panel-head' style='background-color: " + player.colour + "; color: " + playerTextColor + ";'>" + player.name + "</div><div class='panel-body player-hud-body' id='playerHud" + player.playerId + "' style='border: solid 1px " + player.colour + "; display:none;'></div></div>");
     });
 }

@@ -34,10 +34,10 @@ function btnLaunchGameClick(baseUrl) {
 }
 
 function btnTestGameClick() {
-    location.href = "/Game/RunGame?gameId=D91A2989-3776-4D4F-806E-BF293109FC91";
+    location.href = "/Game/RunGame?gameId=CB5E0FC2-5342-4211-B911-B73C7BC5069A";
 }
 
-function btnCancelLoadGameClick() { 
+function btnCancelLoadGameClick() {
     $("#selectGameToLoad").hide();
     $("#selectPlayerToLoad").hide();
 }

@@ -37,48 +37,44 @@ function loadTiles(gameId) {
 function displayBoard(tiles) {
     $("#board").empty();
     
-    tiles.sort(sortTilesByEastingsDesc).sort(sortTilesByNorthingsDesc);
-    var maxEast = tiles[0].eastings;
-    var maxNorth = tiles[0].northings;
-    createTileDivs(maxEast, maxNorth);
+    createTileDivs(tiles);
     drawRoads(tiles);
     drawCities(tiles);
+    //TODO - draw strongholds.
 }
 
-function sortTilesByEastingsDesc(a, b){
-    var aEasting = a.eastings;
-    var bEasting = b.eastings; 
-    return ((aEasting > bEasting) ? -1 : ((aEasting < bEasting) ? 1 : 0));
-}
-function sortTilesByNorthingsDesc(a, b){
-    var aNorthing = a.northings;
-    var bNorthing = b.northings; 
-    return ((aNorthing > bNorthing) ? -1 : ((aNorthing < bNorthing) ? 1 : 0));
-}
+function createTileDivs(tiles) {
+    tiles.sort(sortTilesByEastingsAsc).sort(sortTilesByNorthingsDesc);
 
-function createTileDivs(maxEast, maxNorth) {
-    //TODO - alter this method to take an ordered list of tile objects so the id of the board cells can include the tile Id.
-    for (let north = maxNorth; north >= 0; --north) {
-        for (let east = 0; east <= maxEast; ++east){        
-            let borderClass = 'boardTileBorderThreeSides';
-            if (east == 0) {
-                createBoardRow(north, maxEast);
-                borderClass = 'boardTileBorderFull';
-            }
-            var tileGridRef = String.fromCharCode(97 + east) + north;
-            $("#boardRow" + north).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
+    tiles.forEach(tile => {
+        let borderClass = 'boardTileBorderThreeSides';
+        if (tile.eastings == 0) {
+            createBoardRow(tile.northings);
+            borderClass = 'boardTileBorderFull';
         }
-    }
-
-    // $(".boardCell").click(function () {
-    //     alert($(this).attr('id')); 
-    // });
+        var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
+        $("#boardRow" + tile.northings).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;' data-tileid='" + tile.tileId + "'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
+    });
+    
     $(".boardCell").click(function () {
         tileClicked($(this)); 
     });
 }
-function createBoardRow(northIndex, maxEast) {
+
+function createBoardRow(northIndex) {
     $("#board").append("<tr id='boardRow" + northIndex +"' style='padding: 0;'></tr>")
+}
+
+function sortTilesByEastingsAsc(a, b){
+    var aEasting = a.eastings;
+    var bEasting = b.eastings; 
+    return ((aEasting < bEasting) ? -1 : ((aEasting > bEasting) ? 1 : 0));    
+}
+function sortTilesByNorthingsDesc(a, b){
+    var aNorthing = a.northings;
+    var bNorthing = b.northings;
+    
+    return ((aNorthing > bNorthing) ? -1 : ((aNorthing < bNorthing) ? 1 : 0));
 }
 
 function drawRoads(tiles) {
@@ -147,7 +143,6 @@ function drawRoads(tiles) {
 }
 
 function drawCities(tiles) {
-    var test = 0;
     let cityEast = eastMid - 25;
     let cityNorth = northMid - 25;
 
@@ -168,16 +163,16 @@ function drawCities(tiles) {
             tileContext.font = "16px Arial";
             tileContext.fillText(city.defensiveStrength + "/" + city.basicIncome, cityEast, cityNorth + 64);
         })
-
-        ++test;
     });
 
 }
 
+//TODO - add function to "grey out" seleted tiles, e.g. when placing strongholds with < 5 players 
+
 function tileClicked(clickedBoardCell) {
     if (currentActionType == ACTION_SELECT_TILE) {
-        let clickedId = clickedBoardCell.attr('id');
-        alert("You clicked tile " + clickedId + " when you were supposed to!");
+        let clickedTileId = clickedBoardCell.data('tileid');
+        respondToPlayerMessage(clickedTileId);
     }
 }
 

@@ -47,6 +47,7 @@ function processPlayerMessage(message) {
     switch (message.actionType) {
         case ACTION_SELECT_TILE:
             let playerHud = $("#playerHud" + message.playerId);
+            playerHud.empty();
             playerHud.append("<div>Please select a tile</div>");
             playerHud.slideDown();
             $("#boardContainer").addClass("highlightGameElement");
@@ -58,7 +59,7 @@ function processPlayerMessage(message) {
 }
 
 function respondToPlayerMessage(responseValue) {
-    alert(responseValue);
+    alert("respond" + responseValue);
     var data = {
         PlayerMessageId: currentPlayerMessageId,
         GameId: currentGameId,
@@ -79,14 +80,15 @@ function respondToPlayerMessage(responseValue) {
 }
 
 function cleanUpAfterPlayerResponse() {
+    alert("cleanup");
     if (currentActionType == ACTION_SELECT_TILE) {
         $(".player-hud-body").slideUp();
-        var refreshBoard = loadTiles(currentGameId);
+        loadTiles(currentGameId);
     }
     
     currentActionType = -1;
     currentPlayerMessageId = "";
     
-    await(refreshBoard);
+    //TODO - put this line back in and work out why it's only refreshing board at the process step (listen for message is blocking)
     listenForMessage();
 }

@@ -39,8 +39,9 @@ function displayBoard(tiles) {
     
     createTileDivs(tiles);
     drawRoads(tiles);
+    drawMountains(tiles);
     drawCities(tiles);
-    //TODO - draw strongholds.
+    drawStrongholds(tiles);
 }
 
 function createTileDivs(tiles) {
@@ -53,7 +54,7 @@ function createTileDivs(tiles) {
             borderClass = 'boardTileBorderFull';
         }
         var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
-        $("#boardRow" + tile.northings).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;' data-tileid='" + tile.tileId + "'><canvas id='" + tileGridRef + "' class='boardTile " + borderClass + "'/></td>");
+        $("#boardRow" + tile.northings).append("<td id='tile_" + tileGridRef + "' class='boardCell' style='width: " + tileSize + "px;' data-tileid='" + tile.tileId + "'><canvas id='tile_" + tile.tileId + "' class='boardTile " + borderClass + "'/></td>");
     });
     
     $(".boardCell").click(function () {
@@ -85,8 +86,7 @@ function drawRoads(tiles) {
         // let eastMax = tileDiv.width();
         // let northMax = tileDiv.height();
                        
-        var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
-        const tileCanvasJS = document.getElementById(tileGridRef);
+        const tileCanvasJS = document.getElementById("tile_" + tile.tileId);
         const tileContext = tileCanvasJS.getContext("2d");
         tileContext.strokeStyle = "brown";
         tileContext.lineWidth = 4;
@@ -142,14 +142,54 @@ function drawRoads(tiles) {
     });
 }
 
+function drawMountains(tiles) {
+    tiles.forEach(tile => {
+        if (tile.mountainsNorth || tile.mountainsEast || tile.mountainsSouth || tile.mountainsWest) {
+            const tileCanvasJS = document.getElementById("tile_" + tile.tileId);
+            const tileContext = tileCanvasJS.getContext("2d");
+            tileContext.fillStyle = "#ff661a";
+
+            let x = 0, y = 0, width = 0, height = 0;
+            if (tile.mountainsNorth) {
+                x = 0;
+                y = 0;
+                width = eastMax;
+                height = 8;
+                tileContext.fillRect(x, y, width, height);
+            }
+            if (tile.mountainsEast) {
+                x = eastMax - 8;
+                y = 0;
+                width = 8;
+                height = northMax;
+                tileContext.fillRect(x, y, width, height);
+            }
+            if (tile.mountainsSouth) {
+                x = 0;
+                y = northMax - 8;
+                width = eastMax;
+                height = 8;
+                tileContext.fillRect(x, y, width, height);
+            }
+            if (tile.mountainsWest) {
+                x = 0;
+                y = 0;
+                width = 8;
+                height = northMax;
+                tileContext.fillRect(x, y, width, height);
+            }
+        }
+    });
+}
+
 function drawCities(tiles) {
     let cityEast = eastMid - 25;
     let cityNorth = northMid - 25;
 
     tiles.forEach(tile => { 
-        var tileGridRef = String.fromCharCode(97 + tile.eastings) + tile.northings;
-        const tileCanvasJS = document.getElementById(tileGridRef);
+        const tileCanvasJS = document.getElementById("tile_" + tile.tileId);
         const tileContext = tileCanvasJS.getContext("2d");
+        tileContext.fillStyle = "black";
 
         tile.cities.forEach(city => {
             tileContext.beginPath();
@@ -164,7 +204,27 @@ function drawCities(tiles) {
             tileContext.fillText(city.defensiveStrength + "/" + city.basicIncome, cityEast, cityNorth + 64);
         })
     });
+}
 
+function drawStrongholds(tiles) {
+    let tester = 0;
+    tiles.forEach(tile => {
+        //alert(tile.tileId + ": " + tile.strongholdColour);
+        if (tile.strongholdColour) {
+            //alert("found");
+            const tileCanvasJS = document.getElementById("tile_" + tile.tileId);
+            const tileContext = tileCanvasJS.getContext("2d");
+            
+            tileContext.beginPath();
+            tileContext.arc(25, 25, 10, 0, 2 * Math.PI);
+            tileContext.fillStyle = tile.strongholdColour;
+            tileContext.fill();
+            tileContext.lineWidth = 2;
+            tileContext.strokeStyle = "black";
+            tileContext.stroke();
+
+        }
+    });
 }
 
 //TODO - add function to "grey out" seleted tiles, e.g. when placing strongholds with < 5 players 

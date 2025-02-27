@@ -63,7 +63,7 @@ function respondToPlayerMessage(responseValue) {
     var data = {
         PlayerMessageId: currentPlayerMessageId,
         GameId: currentGameId,
-        ResponseValue: responseValue
+        ResponseValues: { TileId: responseValue }
     };
 
     $.ajax({
@@ -72,8 +72,9 @@ function respondToPlayerMessage(responseValue) {
         dataType: 'json',
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        success: function (ret) {
-            cleanUpAfterPlayerResponse()
+        success: async function (ret) {
+            await loadTile(responseValue, currentGameId);
+            cleanUpAfterPlayerResponse();
         }
         //TODO - work out how to capture errors (success = false) 
     });
@@ -83,12 +84,11 @@ function cleanUpAfterPlayerResponse() {
     alert("cleanup");
     if (currentActionType == ACTION_SELECT_TILE) {
         $(".player-hud-body").slideUp();
-        loadTiles(currentGameId);
     }
     
     currentActionType = -1;
     currentPlayerMessageId = "";
     
     //TODO - put this line back in and work out why it's only refreshing board at the process step (listen for message is blocking)
-    listenForMessage();
+    //listenForMessage();
 }

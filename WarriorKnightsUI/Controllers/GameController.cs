@@ -71,6 +71,20 @@ namespace WarriorKnightsUI.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<JsonResult> GetTile([FromBody] GetTileVM vm)
+        {
+            try
+            {
+                var response = await Gateway.Post(new GatewayRequest { Url = $"Game/Tile", Body = vm });
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Response = ex.Message });
+            }
+        }
+
         public async Task<JsonResult> GetPlayers(Guid id)
         {
             try

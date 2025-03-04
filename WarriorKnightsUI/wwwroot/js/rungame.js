@@ -19,7 +19,7 @@ async function loadGame(gameId) {
 }
 
 function listenForMessage() {
-    alert("listen");
+    console.log("listen start");
     let message = null;
     let tester = 0;
     while (!message) {
@@ -37,10 +37,11 @@ function listenForMessage() {
     }
 
     processPlayerMessage(message);
+    console.log("listen ends");
 }
 
 function processPlayerMessage(message) {
-    alert("process");
+    console.log("process");
     currentActionType = message.actionType;
     currentPlayerMessageId = message.playerMessageId;
 
@@ -58,30 +59,28 @@ function processPlayerMessage(message) {
     }
 }
 
-function respondToPlayerMessage(responseValue) {
-    alert("respond" + responseValue);
+async function respondToPlayerMessage(responseValue) {
+    console.log("respond" + responseValue);
     var data = {
         PlayerMessageId: currentPlayerMessageId,
         GameId: currentGameId,
         ResponseValues: { TileId: responseValue }
     };
 
-    $.ajax({
+    return $.ajax({
         type: 'POST',
         url: 'RespondToPlayerMessage',
         dataType: 'json',
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        success: async function (ret) {
-            await loadTile(responseValue, currentGameId);
-            cleanUpAfterPlayerResponse();
-        }
         //TODO - work out how to capture errors (success = false) 
-    });
+    })
+        .then((ret) => loadTile(responseValue, currentGameId))
+        .then((ret2) => cleanUpAfterPlayerResponse());
 }
 
 function cleanUpAfterPlayerResponse() {
-    alert("cleanup");
+    console.log("cleanup");
     if (currentActionType == ACTION_SELECT_TILE) {
         $(".player-hud-body").slideUp();
     }
@@ -90,5 +89,5 @@ function cleanUpAfterPlayerResponse() {
     currentPlayerMessageId = "";
     
     //TODO - put this line back in and work out why it's only refreshing board at the process step (listen for message is blocking)
-    //listenForMessage();
+    return;
 }

@@ -5,6 +5,8 @@ const northMid = 75;
 const eastMax = 300;
 const northMax = 150;
 
+var testingVar = 0;
+
 function btnDrawClick(){
     var fromx = $("#txtFromX").val();
     var fromy = $("#txtFromY").val();
@@ -42,6 +44,8 @@ function displayBoard(tiles) {
     tiles.forEach(tile => {
         drawTile(tile);
     });
+
+    testingVar = 1;
 }
 
 function createTileDivs(tiles) {
@@ -79,27 +83,29 @@ function sortTilesByNorthingsDesc(a, b){
 }
 
 async function loadTile(tileId, gameId) {
+    console.log("load tile");
     var data = {
         TileId: tileId,
         GameId: gameId
     };
     
-    $.ajax({
+    return $.ajax({
         type: 'POST',
         url: 'GetTile',
         dataType: 'json',
         data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success: function (ret) {
-            var response = JSON.parse(ret.response.toString());
-            drawTile(response.value);
-        }
+        contentType: "application/json; charset=utf-8"
         //TODO - work out how to capture errors (success = false) 
+    }).then(function (ret) {
+        var response = JSON.parse(ret.response.toString());
+        drawTile(response.value);
+        return tileId;
     });
 
 }
 
 function drawTile(tile) {
+    if (testingVar > 0) console.log("drawTile");
     const tileCanvasJS = document.getElementById("tile_" + tile.tileId);
     const tileContext = tileCanvasJS.getContext("2d");
 
@@ -247,9 +253,13 @@ function drawStrongholdsOnTile(tile, tileContext) {
 //TODO - add function to "grey out" seleted tiles, e.g. when placing strongholds with < 5 players 
 
 function tileClicked(clickedBoardCell) {
+    console.log("Tile click start");
     if (currentActionType == ACTION_SELECT_TILE) {
         let clickedTileId = clickedBoardCell.data('tileid');
-        respondToPlayerMessage(clickedTileId);
+        respondToPlayerMessage(clickedTileId)
+            .then(() => listenForMessage());
     }
+    
+    console.log("Tile click end");
 }
 

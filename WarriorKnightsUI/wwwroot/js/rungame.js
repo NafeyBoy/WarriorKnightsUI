@@ -76,7 +76,11 @@ async function respondToPlayerMessage(responseValue) {
         //TODO - work out how to capture errors (success = false) 
     })
         .then((ret) => loadTile(responseValue, currentGameId))
-        .then((ret2) => cleanUpAfterPlayerResponse());
+        .then((ret2) => cleanUpAfterPlayerResponse())
+        .catch((error) => {
+            alert(error);
+            return 0;
+        });
 }
 
 function cleanUpAfterPlayerResponse() {

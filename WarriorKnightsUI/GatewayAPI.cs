@@ -51,6 +51,11 @@ namespace WarriorKnightsUI
                         break;
                 }
 
+                if (vm.Url.Contains("PlayerMessage")) {
+                    var tester = await response.Content.ReadFromJsonAsync<GatewayResponse>();
+                    var tester2 = "dkjnsdkfjv";
+                }
+
                 response.EnsureSuccessStatusCode();
                 var ret = await response.Content.ReadAsStringAsync();
                 return new GatewayResponse { Success = true, Response = ret };
